@@ -1,0 +1,21 @@
+server:
+  http_port: ":8080"
+  read_timeout: 5
+  write_timeout: 5
+
+stage:
+  is_dev: true
+  log_file_path: ./logs.txt
+
+rules:
+  - from: "/api/users"
+    redirectTo: "http://localhost:8081"
+    auth_required: false
+    roles_required:
+      - "admin"
+      - "user"
+    allowed_headers:
+      - "Content-Type"
+      - "X-Request-ID"
+    headers_required:
+      - "X-Auth-Source"
