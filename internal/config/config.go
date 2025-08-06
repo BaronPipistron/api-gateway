@@ -36,6 +36,7 @@ type RuleConfig struct {
 
 type Config struct {
 	Server  ServerConfig  `yaml:"server"`
+	IDP     IDPConfig     `yaml:"idp"`
 	Stage   StageConfig   `yaml:"stage"`
 	Rules   []RuleConfig  `yaml:"rules"`
 	Metrics MetricsConfig `yaml:"metrics"`
@@ -45,6 +46,9 @@ type APIKeysConfig struct {
 	Source   string   `yaml:"source"`
 	Keys     []string `yaml:"keys"`
 	FilePath string   `yaml:"file_path"`
+}
+type IDPConfig struct {
+	RegistrationURL string `yaml:"registration_url"`
 }
 
 func Load() (*Config, error) {
