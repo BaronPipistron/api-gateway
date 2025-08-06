@@ -18,6 +18,11 @@ type ServerConfig struct {
 type StageConfig struct {
 	IsDev       bool   `yaml:"is_dev"`
 	LogFilePath string `yaml:"log_file_path"`
+	Stage       string `yaml:"stage"`
+}
+type MetricsConfig struct {
+	Enabled bool `yaml:"enabled"`
+	Port    int  `yaml:"port"`
 }
 
 type RuleConfig struct {
@@ -30,9 +35,16 @@ type RuleConfig struct {
 }
 
 type Config struct {
-	Server ServerConfig `yaml:"server"`
-	Stage  StageConfig  `yaml:"stage"`
-	Rules  []RuleConfig `yaml:"rules"`
+	Server  ServerConfig  `yaml:"server"`
+	Stage   StageConfig   `yaml:"stage"`
+	Rules   []RuleConfig  `yaml:"rules"`
+	Metrics MetricsConfig `yaml:"metrics"`
+	APIKeys APIKeysConfig `yaml:"api_keys"`
+}
+type APIKeysConfig struct {
+	Source   string   `yaml:"source"`
+	Keys     []string `yaml:"keys"`
+	FilePath string   `yaml:"file_path"`
 }
 
 func Load() (*Config, error) {

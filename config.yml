@@ -19,3 +19,10 @@ rules:
       - "X-Request-ID"
     headers_required:
       - "X-Auth-Source"
+
+api_keys:
+  source: 
+  keys:
+    - "super-secret-api-key-1"
+    - "another-secret-key"
+
