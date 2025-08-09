@@ -6,8 +6,10 @@ import (
 	"github.com/BaronPipistron/api-gateway/internal/app/utils"
 	"github.com/BaronPipistron/api-gateway/internal/config"
 	"github.com/BaronPipistron/api-gateway/internal/telemetry/logging"
+	"github.com/BaronPipistron/api-gateway/internal/telemetry/metrics"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 	"os/signal"
 	"syscall"
@@ -25,6 +27,9 @@ func Run() {
 	router := setupRouter(cfg)
 	srv := createServer(cfg, router)
 	startServer(srv)
+
+	metrics.StartRuntimeMetricsCollector(5 * time.Second)
+	metrics.StartCPUMetricsCollector(5 * time.Second)
 
 	<-ctx.Done()
 	shutdownServer(srv)
@@ -59,6 +64,8 @@ func setupRouter(cfg *config.Config) *gin.Engine {
 	}))
 
 	internalHttp.RegisterRoutes(engine, cfg)
+
+	engine.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	return engine
 }
